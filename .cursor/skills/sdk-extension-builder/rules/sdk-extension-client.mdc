@@ -1,0 +1,29 @@
+---
+description: Use the Backstage frame client safely from extension widgets
+alwaysApply: false
+---
+
+# SDK Extension Client
+
+- Load `ZSDK.min.js` before `bs-frame-client.js`.
+- Initialize once and wait for completion before rendering data or enabling actions:
+
+```javascript
+const app = await ZBackstage.extension.init();
+```
+
+- Use the augmented `app` APIs; do not call the underlying Sigma `get`, `set`, `remove`, or raw request methods.
+- Read host context from initialized metadata such as `app.portalId`, `app.eventId`, `app.spaceId`, and `app.user`. Treat location-specific metadata as optional unless the selected location guarantees it.
+- Use `app.api` for Backstage v3 APIs. Follow the API rule: pass documented snake_case query names in the final argument, put write payloads in `body`, and read the raw REST JSON body.
+- Use `app.request({ apiType, url, connection, method, headers, data })` only for connector-backed external/DRE calls. Add each absolute URL hostname to `whiteListedDomains`. When `connection` is set, add that link name to `dcConnectors`.
+- Use `app.storage.set/get/delete` for extension-scoped JSON-serializable state.
+- Use `app.ui.notify(message, { type })`, `app.ui.confirm`, `app.ui.alert`, `app.ui.modal`, `app.ui.openPane`, `app.ui.closePane`, and `app.ui.closeModal` for host UI.
+- Use `app.widget.render(widgetId)` only for a manifest widget whose `viewMode` is `sidePane` or `modal`.
+- Register parent-to-extension actions as `${widgetId}-${method}` with `app.action.register`.
+- Subscribe with `app.event.on`; retain handler references and unsubscribe with `app.event.off` when appropriate.
+- Clear stale GET data with `app.cache.clear(resourceName)` or request `{ skipCache: true }`.
+- Report user-facing failures through host UI and log technical context without secrets.
+- Disable controls while asynchronous mutations are pending and restore them in `finally`.
+- Never place connector credentials, API secrets, authorization headers, or private keys in widget source.
+
+Prefer `async`/`await`, focused functions, and explicit initialization failure UI. Do not assume an API operation exists; fail with an actionable message when a required runtime operation is unavailable.

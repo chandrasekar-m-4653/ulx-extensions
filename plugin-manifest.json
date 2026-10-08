@@ -1,0 +1,22 @@
+{
+  "whiteListedDomains": [],
+  "service": "BACKSTAGE",
+  "cspDomains": [],
+  "storage": false,
+  "locale": ["en"],
+  "modules": {
+    "widgets": [
+      {
+        "location": "backstage.space.settings.left.pane",
+        "id": "space-welcome-widget",
+        "title": "Welcome widget",
+        "viewMode": "route",
+        "url": "/app/widget/index.html",
+        "navigationConfig": {
+          "customPath": "welcome-widget",
+          "url": "/app/widget/index.html"
+        }
+      }
+    ]
+  }
+}

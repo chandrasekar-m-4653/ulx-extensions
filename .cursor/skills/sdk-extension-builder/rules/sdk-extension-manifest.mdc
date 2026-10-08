@@ -1,0 +1,48 @@
+---
+description: Author Eventz SDK extension plugin manifests that satisfy server validation
+globs: **/plugin-manifest.json
+alwaysApply: false
+---
+
+# SDK Extension Manifest
+
+- Keep `service` as `BACKSTAGE`.
+- Include `locale`, `whiteListedDomains`, and `modules.widgets`; use `dcConnectors` when widget code calls `app.request` with `connection`.
+- Every widget needs a non-empty, globally unique `id`, a supported `location`, and a non-empty root `url` that starts with `/app/`.
+- Use `title` as the widget label. Do not add `labelConfig`.
+- Do not repeat the same full location. A `#suffix` distinguishes instances, while validation still checks the static location before `#`.
+- Declare at most one widget whose static location is `backstage.background.process`.
+- Keep every local widget URL under `/app/` and ensure the referenced file is packaged.
+
+Mode requirements:
+
+- Every view mode includes root `url`.
+- `route`: also include `navigationConfig.customPath` and `navigationConfig.url`, both non-empty. `navigationConfig.url` must start with `/app/`.
+- `newTab`: also include `navigationConfig.urlType`; `static` requires `navigationConfig.url`, while `dynamic` requires `navigationConfig.method`.
+- `popup`: also include `popupConfig.position` and `popupConfig.action`.
+- Route-only locations must use `viewMode: "route"`: portal settings left pane, space settings left pane, event settings left pane, and event abstract editor.
+
+When widget source calls `app.request`:
+
+- Add each absolute URL hostname to `whiteListedDomains`.
+- If the call includes `connection`, add that link name inside `dcConnectors`. Do not invent connector IDs or data-center mappings.
+- Keep the `connection` value identical to its `dcConnectors` link name.
+
+Supported static locations:
+
+- `backstage.portal.settings.integrations.crm`
+- `backstage.site.pre.registration`
+- `backstage.event.attendee.menu`
+- `backstage.custom.form.response.menu`
+- `backstage.background.process`
+- `backstage.config.custom.domain`
+- `backstage.exhibitor.menu`
+- `backstage.portal.settings.left.pane`
+- `backstage.space.settings.left.pane`
+- `backstage.floorplan.editor.left.menu`
+- `backstage.event.settings.left.pane`
+- `backstage.portal.settings.payments`
+- `backstage.event.ticketing.payments`
+- `backstage.event.abstract.editor`
+
+`app.api` calls do not add domains. Add only hostnames the widget passes to `app.request`.

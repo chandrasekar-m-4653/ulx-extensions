@@ -1,0 +1,15 @@
+---
+description: Call Backstage v3 APIs through app.api using documented snake_case query names and raw response bodies
+globs: src/**/*.{js,jsx}
+alwaysApply: false
+---
+
+# SDK Extension API
+
+- Call Backstage v3 through `app.api.<operationId>(...pathParams, query)`.
+- Pass path parameters positionally. The host injects `portalId`.
+- Put query parameters in the final object using the names from the endpoint page, including `page`, `per_page`, `sort_by`, `sort_order`, and `ticket_id`. Do not camel-case them.
+- Put create, update, and delete payloads under `body` in that same final object.
+- Read the raw REST JSON body. List responses use `{ pagination, <resourceName>: [...] }`. `pagination` contains `total_count`, `page`, `per_page`, `total_pages`, and `has_more_items`. A single-resource response is the resource object itself.
+- Confirm the operation id, path order, query names, and response fields against the current endpoint page before generating the call. Start from https://www.zoho.com/backstage/api/v3/introduction.html.
+- `app.api` does not add `whiteListedDomains` entries.

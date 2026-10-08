@@ -1,0 +1,25 @@
+---
+description: Build Backstage extension widgets with React, PrimeReact, Tailwind tokens, and the required SDK scripts
+alwaysApply: false
+---
+
+# SDK Extension HTML
+
+Use React in this starter. Do not emit Ember, web-component, or `Ulx*` component syntax.
+
+Start the widget document with these scripts in this order, then the application module:
+
+```html
+<script src="https://static.zohocdn.com/backstage/v1.0/javascript/sdk/ZSDK.min.js"></script>
+<script src="https://static.zohocdn.com/backstage/v1.0/javascript/sdk/bs-frame-client.js"></script>
+```
+
+- Keep SDK URLs aligned with `src/config/project.config.js`.
+- Use `<html class="h-full">`, `<body class="h-full m-0 ulx-default-mode">`, and a full-size `#root`.
+- Do not link the legacy ULX editor stylesheet.
+- Use PrimeReact for buttons, inputs, tables, dialogs, tags, and feedback.
+- Compose layout with Tailwind utilities and token classes such as `bg-body`, `bg-surface`, `text-primary`, `border-border`, `flex`, `gap-*`, `p-*`, and `w-full`.
+- Avoid custom CSS, inline styles, and hard-coded colors when a token class exists.
+- Use semantic controls with labels and accessible names.
+- Decorative icons use `aria-hidden="true"`; meaningful images have useful `alt` text.
+- Render untrusted values as text; do not inject them through `innerHTML` or `dangerouslySetInnerHTML`.
