@@ -14,6 +14,7 @@ Before editing, read:
 - [MANIFEST.md](MANIFEST.md) for manifest contracts and mode examples.
 - [CLIENT.md](CLIENT.md) for the iframe client API.
 - [API.md](API.md) for Backstage v3 query names and response bodies.
+- [ICONS.md](ICONS.md) for choosing a bs-icons1 key or drawing a matching 24px stroke icon.
 - [rules/sdk-extension-html.mdc](rules/sdk-extension-html.mdc)
 - [rules/sdk-extension-client.mdc](rules/sdk-extension-client.mdc)
 - [rules/sdk-extension-api.mdc](rules/sdk-extension-api.mdc)
@@ -32,6 +33,7 @@ Determine:
 5. Backstage v3 API operations required.
 6. External domains and connector link names required.
 7. Host metadata expected at the chosen location.
+8. The menu icon for this widget, and any action icons the page itself shows. Follow [ICONS.md](ICONS.md).
 
 Ask only for values that cannot be inferred, especially connector IDs, data-center mappings, and external scopes.
 
@@ -79,6 +81,7 @@ Start from the starter `plugin-manifest.json`, then add one widget entry per sur
 - Give every widget a stable, unique ID.
 - Match the manifest mode to what the host location can render.
 - Give every widget a non-empty root `url` under `/app/`, including `route` and `newTab`. Use `title` for the widget label. Do not add `labelConfig`.
+- Set `icon` on that widget in the same edit when a 24px `bs-icons1` key matches the project. The value is `bs-icons1` plus the catalog key, for example `"icon": "bs-icons1 tick-thick-icon"`. Omit `icon` when no catalog key matches. Do not invent a class for a drawn SVG.
 - When widget code calls `app.request` with a custom URL, add that URL hostname to `whiteListedDomains`.
 - When that call includes `connection`, add the link name inside `dcConnectors` using the configured data center and connector ID. Do not invent those mappings.
 - Ensure every `/app/...` URL resolves to a packaged file.
@@ -90,6 +93,7 @@ The starter widget uses `backstage.space.settings.left.pane` with `viewMode: "ro
 
 Edit `src/WelcomeWidget.jsx` (or replace it) instead of hand-writing packaged HTML.
 
+- Choose icons for this project, not a generic sample. Search the bs-icons1 catalog first. Save a drawn icon at `public/icons/<action>.svg` and use that file in the widget. Follow [ICONS.md](ICONS.md).
 - Use PrimeReact for interactive controls.
 - Use Tailwind and token-backed classes (`bg-body`, `bg-surface`, `text-primary`, `border-border`) for layout.
 - Use `PageLayout` and `PageHeader` for the iframe canvas.
@@ -133,6 +137,7 @@ Before handoff:
 - Check every HTML file loads ZSDK before the Backstage frame client.
 - Check every `app.request` hostname is in `whiteListedDomains` and every `connection` name is in `dcConnectors`.
 - Check `app.api` calls use documented snake_case query names and read the raw v3 JSON body from [API.md](API.md).
+- Check `icon` is `bs-icons1` plus a real catalog key when one was selected, and every drawn icon the widget uses exists under `public/icons/`.
 - Check controls have labels, keyboard behavior, pending states, and useful errors.
 - Check no credentials or environment-specific secrets are packaged.
 - Exercise initialization and the primary success/failure path in a Backstage iframe when available.

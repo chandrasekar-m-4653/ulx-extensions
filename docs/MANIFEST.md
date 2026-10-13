@@ -31,13 +31,13 @@ This starter’s root `plugin-manifest.json` declares one `backstage.space.setti
 - A full location may appear only once.
 - A suffix such as `backstage.exhibitor.menu#crm-search` creates a distinct full location; validation removes the suffix when checking support and background count.
 - Only one `backstage.background.process` widget is allowed, including suffixed variants.
-- `icon` may be consumed by menu hosts.
+- `icon`: set it to `bs-icons1` plus a real 24px catalog key when one matches the widget. Menu hosts consume it. A drawn SVG in `public/icons/` is not a valid `icon` value.
 
 ## Side pane or modal
 
 ```json
 {
-  "icon": "bs-icons1 add-icon-01",
+  "icon": "bs-icons1 add-user-icon",
   "location": "backstage.exhibitor.menu",
   "id": "exhibitor-crm-search",
   "title": "Add exhibitor from CRM",

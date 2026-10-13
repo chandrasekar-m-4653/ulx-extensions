@@ -122,6 +122,7 @@ dist/                 ← zet pack zip
 | [docs/PRIMEREACT-USAGE.md](docs/PRIMEREACT-USAGE.md) | PrimeReact imports, size classes, screenshot → widget workflow |
 | [docs/CLIENT.md](docs/CLIENT.md) | Backstage frame-client APIs |
 | [docs/API.md](docs/API.md) | Backstage v3 query names and response bodies |
+| [docs/ICONS.md](docs/ICONS.md) | bs-icons1 selection and 24px stroke rules |
 | [docs/MANIFEST.md](docs/MANIFEST.md) | Plugin manifest contract |
 
 ---

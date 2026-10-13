@@ -22,4 +22,5 @@ Start the widget document with these scripts in this order, then the application
 - Avoid custom CSS, inline styles, and hard-coded colors when a token class exists.
 - Use semantic controls with labels and accessible names.
 - Decorative icons use `aria-hidden="true"`; meaningful images have useful `alt` text.
+- Project icons that are not in the bs-icons1 sprite live at `public/icons/<action>.svg`. Use `currentColor` strokes. PrimeIcons stay on PrimeReact controls.
 - Render untrusted values as text; do not inject them through `innerHTML` or `dangerouslySetInnerHTML`.

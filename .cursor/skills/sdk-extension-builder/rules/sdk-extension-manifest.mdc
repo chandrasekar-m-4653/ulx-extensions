@@ -10,6 +10,7 @@ alwaysApply: false
 - Include `locale`, `whiteListedDomains`, and `modules.widgets`; use `dcConnectors` when widget code calls `app.request` with `connection`.
 - Every widget needs a non-empty, globally unique `id`, a supported `location`, and a non-empty root `url` that starts with `/app/`.
 - Use `title` as the widget label. Do not add `labelConfig`.
+- When a 24px `bs-icons1` key matches the widget, set `icon` to `bs-icons1` plus that key in the same edit. Do not invent a class for an icon drawn into `public/icons/`.
 - Do not repeat the same full location. A `#suffix` distinguishes instances, while validation still checks the static location before `#`.
 - Declare at most one widget whose static location is `backstage.background.process`.
 - Keep every local widget URL under `/app/` and ensure the referenced file is packaged.
