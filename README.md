@@ -18,13 +18,61 @@ The local preview initializes without a Backstage host and shows a fallback stat
 Build the uploadable extension:
 
 ```bash
-npm run build
-# → app/widget/index.html
 npm run pack
-# → dist/<project>.zip via zet pack
+# → validate, build app/widget/, then create dist/<project>.zip
 ```
 
 Upload the zip from **`dist/`** to Backstage.
+
+---
+
+## Connect to Sigma
+
+This starter uses the private `zoho-extension-toolkit` 1.5.44+ command set for
+Backstage and Sigma synchronization. Authenticate, select a workspace, and
+create the cloud app:
+
+```bash
+npm run sigma:login
+npm run sigma:workspaces
+npm run zet:init
+```
+
+During `zet:init`, select **BACKSTAGE**. The command creates the Sigma app in an
+isolated temporary directory and imports only its encrypted `app_info.json`
+link. It does not replace this starter's React source or manifest.
+`app_info.json` is account- and machine-specific and is ignored by Git.
+
+Push a fresh build and test it in Sigma:
+
+```bash
+npm run sigma:push
+npm run sigma:cloud:run
+# when finished
+npm run sigma:cloud:stop
+```
+
+`sigma:push` always validates and rebuilds before invoking `zet push`.
+Use `npm run sigma:whoami` to check the active account/workspace.
+
+Pulling is intentionally guarded:
+
+```bash
+npm run sigma:pull
+```
+
+It requires a clean tracked Git worktree. ZET's downloaded compiled files stay
+under ignored `app/`; the cloud manifest is copied to
+`dist/sigma-pull/plugin-manifest.json`, and the tracked local manifest is
+restored. A pull does **not** reconstruct or update files in `src/`.
+
+For ZET's packaged local server instead of the Vite source preview:
+
+```bash
+npm run zet:run
+```
+
+This builds first and then delegates to `zet run`.
 
 ---
 
@@ -108,8 +156,16 @@ dist/                 ← zet pack zip
 | `npm run validate` | Validate the plugin manifest and SDK script order |
 | `npm run build` | Compile the widget into `app/widget/` |
 | `npm run check` | Validate then build |
-| `npm run pack` | `zet pack` → `dist/*.zip` |
+| `npm run pack` | Check, build, and run `zet pack` → `dist/*.zip` |
 | `npm run preview` | Preview the Vite production build |
+| `npm run zet:init` | Create/link a BACKSTAGE app in Sigma |
+| `npm run zet:run` | Build and start the ZET local server |
+| `npm run zet:validate` | Check/build and run ZET validation |
+| `npm run sigma:push` | Check/build and push to Sigma |
+| `npm run sigma:pull` | Guarded pull of cloud package output |
+| `npm run sigma:cloud:run` | Start Sigma cloud testing |
+| `npm run sigma:cloud:stop` | Stop Sigma cloud testing |
+| `npm run zet` | Show all workflow commands |
 
 ---
 
@@ -117,6 +173,7 @@ dist/                 ← zet pack zip
 
 | Doc | Purpose |
 |-----|---------|
+| [docs/ZET-WORKFLOWS.md](docs/ZET-WORKFLOWS.md) | Step-by-step ZET setup, Sigma sync, cloud testing, and packaging |
 | [docs/PROJECT-BLUEPRINT.md](docs/PROJECT-BLUEPRINT.md) | Architecture, boundaries, and quality gate |
 | [docs/UI-DESIGN-RULES.md](docs/UI-DESIGN-RULES.md) | Spacing, type, colors, form/table/drawer patterns |
 | [docs/PRIMEREACT-USAGE.md](docs/PRIMEREACT-USAGE.md) | PrimeReact imports, size classes, screenshot → widget workflow |
@@ -131,3 +188,5 @@ dist/                 ← zet pack zip
 
 - Node.js 18+
 - npm 9+
+- Access to the private npm registry that provides
+  `zoho-extension-toolkit` 1.5.44+ with BACKSTAGE support

@@ -10,8 +10,22 @@
     "build": "node scripts/build-extension.mjs",
     "validate": "node scripts/validate-extension.mjs",
     "check": "npm run validate && npm run build",
+    "test:workflow": "node --test scripts/zet-workflow.test.mjs",
     "preview": "vite preview",
-    "pack": "zet pack"
+    "pack": "node scripts/zet-workflow.mjs pack",
+    "zet": "node scripts/zet-workflow.mjs",
+    "zet:init": "node scripts/zet-workflow.mjs init",
+    "zet:run": "node scripts/zet-workflow.mjs run",
+    "zet:validate": "node scripts/zet-workflow.mjs validate",
+    "zet:pack": "node scripts/zet-workflow.mjs pack",
+    "sigma:login": "node scripts/zet-workflow.mjs login",
+    "sigma:whoami": "node scripts/zet-workflow.mjs whoami",
+    "sigma:workspaces": "node scripts/zet-workflow.mjs workspaces",
+    "sigma:push": "node scripts/zet-workflow.mjs push",
+    "sigma:pull": "node scripts/zet-workflow.mjs pull",
+    "sigma:cloud:run": "node scripts/zet-workflow.mjs cloud-run",
+    "sigma:cloud:stop": "node scripts/zet-workflow.mjs cloud-stop",
+    "sigma:logout": "node scripts/zet-workflow.mjs logout"
   },
   "dependencies": {
     "primeicons": "^7.0.0",

@@ -49,9 +49,9 @@ validate
     ↓
 build app/widget/
     ↓
-zet pack → dist/*.zip
+ZET pack or Sigma push
     ↓
-upload to Backstage
+upload to Backstage or cloud-test in Sigma
 ```
 
 ### Preview
@@ -99,10 +99,54 @@ Then pack with the Zoho Extension Toolkit:
 npm run pack
 ```
 
-That runs `zet pack` and writes `dist/<project>.zip`.
+That validates, builds, runs `zet pack`, and writes `dist/<project>.zip`.
 
 All asset paths are relative. Generated HTML loads the SDK first and the frame
 client second before the application module.
+
+## Sigma synchronization
+
+The private `zoho-extension-toolkit` 1.5.44+ CLI can link this starter to a
+BACKSTAGE extension in Sigma:
+
+```bash
+npm run sigma:login
+npm run sigma:workspaces
+npm run zet:init
+```
+
+`zet:init` runs the interactive ZET initializer in a temporary directory. After
+the user selects BACKSTAGE, it copies only the generated encrypted
+`app_info.json` into the starter and deletes the generated scaffold. The link
+file is ignored by Git and must not be shared.
+
+The normal cloud loop is:
+
+```text
+edit src/ and plugin-manifest.json
+    ↓
+npm run sigma:push
+    ↓
+validate and build app/widget/
+    ↓
+zet push
+    ↓
+npm run sigma:cloud:run
+```
+
+`sigma:cloud:stop` ends cloud testing. Authentication and workspace state can
+be inspected with `sigma:whoami` and changed with `sigma:workspaces`.
+
+`sigma:pull` is for inspecting cloud package output, not source synchronization.
+It requires a clean tracked worktree, leaves downloaded compiled assets in the
+ignored `app/` directory, stores the cloud manifest at
+`dist/sigma-pull/plugin-manifest.json`, and restores the local tracked
+manifest. Sigma cannot recreate the React files in `src/` from a compiled
+package.
+
+The command dispatcher is `scripts/zet-workflow.mjs`; run `npm run zet` for its
+command list. It checks for a project-local private ZET version before invoking
+real ZET commands.
 
 ## UI architecture
 
