@@ -10,7 +10,7 @@ Install:
 - Node.js 18 or newer
 - npm 9 or newer
 - Access to the private npm registry containing
-  `zoho-extension-toolkit` 1.5.44 or newer with BACKSTAGE support
+  `@zohosigma/zoho-extension-toolkit` 1.5.44 or newer with BACKSTAGE support
 
 Confirm that npm uses the required private registry, then install dependencies:
 
@@ -47,7 +47,7 @@ npm run sigma:login
 ```
 
 The project workflow first verifies that the project-local private
-`zoho-extension-toolkit` is version 1.5.44 or newer. It then invokes:
+`@zohosigma/zoho-extension-toolkit` is version 1.5.44 or newer. It then invokes:
 
 ```bash
 zet login
@@ -394,6 +394,6 @@ npm run sigma:pull
 
 ### ZET version is rejected
 
-This project requires the private `zoho-extension-toolkit` version 1.5.44 or
-newer. Reconfigure the private registry and reinstall dependencies.
+This project requires the private `@zohosigma/zoho-extension-toolkit` version
+1.5.44 or newer. Reconfigure the private registry and reinstall dependencies.
 

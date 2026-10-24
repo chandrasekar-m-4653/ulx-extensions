@@ -20,6 +20,10 @@ const root = process.env.ZET_WORKFLOW_ROOT
 const appInfoPath = join(root, 'app_info.json');
 const manifestPath = join(root, 'plugin-manifest.json');
 const minimumZetVersion = '1.5.44';
+const toolkitPackages = [
+  '@zohosigma/zoho-extension-toolkit',
+  'zoho-extension-toolkit',
+];
 
 const commands = new Map([
   ['init', initializeSigma],
@@ -107,15 +111,14 @@ function versionAtLeast(version, minimum) {
 function verifyZetVersion() {
   if (process.env.ZET_BIN) return;
 
-  const packagePath = join(
-    root,
-    'node_modules',
-    'zoho-extension-toolkit',
-    'package.json',
-  );
-  if (!existsSync(packagePath)) {
+  const packagePath = toolkitPackages
+    .map((packageName) =>
+      join(root, 'node_modules', ...packageName.split('/'), 'package.json'),
+    )
+    .find((candidate) => existsSync(candidate));
+  if (!packagePath) {
     throw new Error(
-      'Cannot inspect zoho-extension-toolkit. Run npm install and try again.',
+      'Cannot inspect @zohosigma/zoho-extension-toolkit. Run npm install and try again.',
     );
   }
 

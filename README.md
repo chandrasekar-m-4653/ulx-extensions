@@ -28,9 +28,9 @@ Upload the zip from **`dist/`** to Backstage.
 
 ## Connect to Sigma
 
-This starter uses the private `zoho-extension-toolkit` 1.5.44+ command set for
-Backstage and Sigma synchronization. Authenticate, select a workspace, and
-create the cloud app:
+This starter uses the private `@zohosigma/zoho-extension-toolkit` 1.5.44+
+command set for Backstage and Sigma synchronization. Authenticate, select a
+workspace, and create the cloud app:
 
 ```bash
 npm run sigma:login
@@ -189,4 +189,4 @@ dist/                 ← zet pack zip
 - Node.js 18+
 - npm 9+
 - Access to the private npm registry that provides
-  `zoho-extension-toolkit` 1.5.44+ with BACKSTAGE support
+  `@zohosigma/zoho-extension-toolkit` 1.5.44+ with BACKSTAGE support

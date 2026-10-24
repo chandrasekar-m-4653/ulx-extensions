@@ -106,8 +106,8 @@ client second before the application module.
 
 ## Sigma synchronization
 
-The private `zoho-extension-toolkit` 1.5.44+ CLI can link this starter to a
-BACKSTAGE extension in Sigma:
+The private `@zohosigma/zoho-extension-toolkit` 1.5.44+ CLI can link this
+starter to a BACKSTAGE extension in Sigma:
 
 ```bash
 npm run sigma:login
