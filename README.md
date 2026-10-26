@@ -33,6 +33,8 @@ command set for Backstage and Sigma synchronization. Authenticate, select a
 workspace, and create the cloud app:
 
 ```bash
+cp .env.example .env.local
+# Add W_ZET_CLIENT_ID and W_ZET_CLIENT_SECRET to .env.local.
 npm run sigma:login
 npm run sigma:workspaces
 npm run zet:init

@@ -24,6 +24,15 @@ const toolkitPackages = [
   '@zohosigma/zoho-extension-toolkit',
   'zoho-extension-toolkit',
 ];
+const zetEnvironmentKeys = new Set([
+  'ACCOUNTS_ADMIN_URL',
+  'ACCOUNTS_AUTH_URL',
+  'SIGMA_ADMIN_URL',
+  'W_ZET_CLIENT_ID',
+  'W_ZET_CLIENT_SECRET',
+]);
+
+loadZetEnvironment();
 
 const commands = new Map([
   ['init', initializeSigma],
@@ -44,6 +53,70 @@ const commands = new Map([
 ]);
 
 const [, , command, ...forwardedArgs] = process.argv;
+
+function findEnvironmentRoot(startPath) {
+  let currentPath = startPath;
+  while (true) {
+    if (existsSync(join(currentPath, '.env.example'))) return currentPath;
+    const parentPath = dirname(currentPath);
+    if (parentPath === currentPath) return startPath;
+    currentPath = parentPath;
+  }
+}
+
+function parseEnvironmentFile(filePath) {
+  const values = new Map();
+  for (const sourceLine of readFileSync(filePath, 'utf8').split(/\r?\n/)) {
+    const line = sourceLine.trim();
+    if (!line || line.startsWith('#')) continue;
+
+    const assignment = line.startsWith('export ') ? line.slice(7).trim() : line;
+    const separator = assignment.indexOf('=');
+    if (separator === -1) continue;
+
+    const key = assignment.slice(0, separator).trim();
+    if (!zetEnvironmentKeys.has(key)) continue;
+
+    let value = assignment.slice(separator + 1).trim();
+    const quote = value[0];
+    if ((quote === '"' || quote === "'") && value.endsWith(quote)) {
+      value = value.slice(1, -1);
+    } else {
+      value = value.replace(/\s+#.*$/, '').trim();
+    }
+    values.set(key, value);
+  }
+  return values;
+}
+
+function loadZetEnvironment() {
+  const inheritedKeys = new Set(Object.keys(process.env));
+  const environmentRoot = findEnvironmentRoot(root);
+  const directories = [...new Set([environmentRoot, root])];
+  const candidates = directories.flatMap((directory) => [
+    join(directory, '.env'),
+    join(directory, '.env.local'),
+  ]);
+  if (process.env.ZET_ENV_FILE) {
+    candidates.push(resolve(process.env.ZET_ENV_FILE));
+  }
+
+  const loadedFiles = [];
+  for (const filePath of [...new Set(candidates)]) {
+    if (!existsSync(filePath)) continue;
+    let loaded = false;
+    for (const [key, value] of parseEnvironmentFile(filePath)) {
+      if (inheritedKeys.has(key)) continue;
+      process.env[key] = value;
+      loaded = true;
+    }
+    if (loaded) loadedFiles.push(filePath);
+  }
+
+  if (loadedFiles.length > 0) {
+    console.log(`Loaded ZET environment from ${loadedFiles.join(', ')}`);
+  }
+}
 
 async function run(commandName, args, options = {}) {
   await new Promise((resolvePromise, rejectPromise) => {

@@ -19,6 +19,39 @@ npm config get registry
 npm install
 ```
 
+Create your private ZET environment file:
+
+```bash
+cp .env.example .env.local
+```
+
+Open `.env.local` and provide the production OAuth client values:
+
+```dotenv
+ACCOUNTS_ADMIN_URL=https://accounts.zoho.com
+ACCOUNTS_AUTH_URL=https://accounts.zoho.dctype
+SIGMA_ADMIN_URL=https://sigma.zoho.dctype
+W_ZET_CLIENT_ID=your-client-id
+W_ZET_CLIENT_SECRET=your-client-secret
+```
+
+Keep the literal lowercase `dctype` placeholder. ZET replaces it with the
+authenticated account's data-center suffix.
+
+`.env.local` is ignored by Git and must never be committed. `.env.example` is
+the safe, committed template and must not contain real credentials.
+
+Every workflow command automatically loads:
+
+1. The shared `.env` and `.env.local` beside the nearest `.env.example`.
+2. Project-specific `.env` and `.env.local` files, which override shared files.
+3. Values exported in the terminal, which have the highest priority.
+
+This allows generated extension projects under this workspace to share the
+environment file at `/Users/chandra-4653/workspace/extensions/.env.local`.
+Set `ZET_ENV_FILE=/absolute/path/to/file` only when an explicit alternative
+file is required.
+
 Show all available project workflows:
 
 ```bash

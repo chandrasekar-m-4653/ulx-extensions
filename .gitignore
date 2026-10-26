@@ -4,6 +4,9 @@ dist-app
 .page-entries
 app
 app_info.json
+.env
+.env.*
+!.env.example
 *.local
 .DS_Store
 .vscode
